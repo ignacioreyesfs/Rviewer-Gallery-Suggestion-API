@@ -115,7 +115,7 @@ public class ImageControllerTest {
 	}
 	
 	@Test
-	public void getOrdererImages() throws JsonProcessingException, Exception {
+	public void getImagesInOrder() throws JsonProcessingException, Exception {
 		Image image1 = new Image("id1", "name1", "url1", LocalDateTime.now().minusDays(2));
 		image1 = imageRepo.save(image1);
 		imageStatsRepo.save(new ImageStats(image1));
