@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rviewer.skeletons.dao.EventRepository;
 import com.rviewer.skeletons.dao.ImageRepository;
 import com.rviewer.skeletons.model.Image;
-import com.rviewer.skeletons.model.event.Event;
 import com.rviewer.skeletons.model.event.EventType;
 import com.rviewer.skeletons.service.EventDTO;
 
@@ -54,20 +54,25 @@ public class ImageControllerTest {
 	public void addEventTest() throws JsonProcessingException, Exception {
 		Image image = new Image("id1", "name1", "url1", LocalDateTime.now());
 		image = imageRepo.save(image);
-		addEvent(image.getId(), new EventDTO(EventType.VIEW, LocalDateTime.now()));
-		addEvent(image.getId(), new EventDTO(EventType.VIEW, LocalDateTime.now()));
-		addEvent(image.getId(), new EventDTO(EventType.CLICK, LocalDateTime.now()));
+		addEvent(image.getId(), new EventDTO(EventType.VIEW, LocalDateTime.now())).andExpect(status().isNoContent());
+		addEvent(image.getId(), new EventDTO(EventType.VIEW, LocalDateTime.now())).andExpect(status().isNoContent());
+		addEvent(image.getId(), new EventDTO(EventType.CLICK, LocalDateTime.now())).andExpect(status().isNoContent());
 		
 		assertEquals(3, eventRepo.findByImage(image).size());
 	}
 	
-	// invalid format test
+	@Test
+	public void addInvalidEventTest() throws JsonProcessingException, Exception {
+		Image image = new Image("id1", "name1", "url1", LocalDateTime.now());
+		image = imageRepo.save(image);
+		addEvent(image.getId(), new EventDTO(EventType.VIEW, null)).andExpect(status().isBadRequest());
+		assertEquals(0, eventRepo.findByImage(image).size());
+	}
 	
-	private void addEvent(String imageId, EventDTO event) throws JsonProcessingException, Exception {
-		mockMvc
+	private ResultActions addEvent(String imageId, EventDTO event) throws JsonProcessingException, Exception {
+		return mockMvc
 			.perform(post("/images/{imageId}/events", imageId)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objMapper.writeValueAsBytes(event)))
-			.andExpect(status().isNoContent());
+				.content(objMapper.writeValueAsBytes(event)));
 	}
 }
