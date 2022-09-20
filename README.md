@@ -1,4 +1,4 @@
-# Gallery Tracking Optimizer
+# Gallery Tracking Optimizer (Rviewer challenge)
 
 Most of the e-commerces have a product gallery on their website, where they show their products to the customers trying
 to sell them but showing how other buyers are using/consuming it. These galleries, most of the time, are a 
