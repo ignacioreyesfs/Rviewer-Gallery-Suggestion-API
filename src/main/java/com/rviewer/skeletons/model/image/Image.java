@@ -1,4 +1,4 @@
-package com.rviewer.skeletons.model;
+package com.rviewer.skeletons.model.image;
 
 import java.time.LocalDateTime;
 

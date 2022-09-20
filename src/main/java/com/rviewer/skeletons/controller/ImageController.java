@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rviewer.skeletons.model.Image;
+import com.rviewer.skeletons.model.image.Image;
 import com.rviewer.skeletons.service.EventDTO;
 import com.rviewer.skeletons.service.ImageService;
 

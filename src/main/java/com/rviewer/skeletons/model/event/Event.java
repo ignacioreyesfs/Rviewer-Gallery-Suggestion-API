@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.rviewer.skeletons.model.Image;
+import com.rviewer.skeletons.model.image.Image;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,4 +28,11 @@ public class Event {
 	@ManyToOne
 	@JoinColumn(name="image_id")
 	private Image image;
+	
+	public Event(EventType type, LocalDateTime timestamp, Image image) {
+		super();
+		this.type = type;
+		this.timestamp = timestamp;
+		this.image = image;
+	}
 }
